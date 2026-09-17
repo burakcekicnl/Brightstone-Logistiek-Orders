@@ -1,7 +1,7 @@
 import csv
 import os
 from typing import Dict, List
-from BriLoExceptions import InvalidCsvError, MissingColumnError
+from BriLoExceptions import InvalidCsvError, MissingColumnError, MissingRowError
 
 
 
@@ -77,6 +77,8 @@ class BriLoReader:
             reader = csv.DictReader(file)
             for row in reader:
                 orders.append(row)
+        if not orders:
+            raise MissingRowError(f"Het geselecteerde bestand '{self.file_path}' heeft geen orders")
         return orders
 
 
