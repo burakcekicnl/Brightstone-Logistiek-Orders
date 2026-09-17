@@ -10,3 +10,6 @@ class MissingColumnError (Exception):
     #
     pass
 
+class MissingRowError (Exception):
+    pass
+
