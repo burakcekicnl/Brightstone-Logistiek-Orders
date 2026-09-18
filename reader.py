@@ -78,8 +78,10 @@ class BriLoReader:
             reader = csv.DictReader(file, delimiter=";")
             for row in reader:
                 orders.append(row)
-        if not orders:
-            raise MissingRowError(f"Het geselecteerde bestand '{self.file_path}' heeft geen orders")
+
+        if not orders :
+            raise MissingRowError (f"Het geselecteerde bestand '{self.file_path}' heeft geen order.")
+
         return orders
 
 
