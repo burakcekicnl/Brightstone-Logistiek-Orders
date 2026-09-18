@@ -28,7 +28,31 @@ def test_cli_successful_run(tmp_path: pytest.TempPathFactory) -> None:
         assert exc_info.value.code == EXIT_CODE_OK
 
 
-def test_cli_invoerprobleem_exit_code(tmp_path: pytest.TempPathFactory) -> None:
+def test_cli_invalid_csv_exit_code(tmp_path: pytest.TempPathFactory) -> None:
+    """Testen of de CLI exitcode 1 retourneert wanneer een onjuist bestand wordt ingevoerd."""
+    csv_file = tmp_path / "invalid.csv"
+
+    test_args = ["cli.py", "-i", str(csv_file)]
+
+    with patch("sys.argv", test_args):
+        cli = BriLoCLI()
+        with pytest.raises(SystemExit) as exc_info:
+            cli.run()
+        assert exc_info.value.code == EXIT_CODE_INVOERPROBLEEM
+
+def test_cli_invalid_csv_extentie_exit_code(tmp_path: pytest.TempPathFactory) -> None:
+    """Testen of de CLI exitcode 1 retourneert wanneer een onjuist bestand wordt ingevoerd."""
+    csv_file = tmp_path / "invalid.xlsx"
+
+    test_args = ["cli.py", "-i", str(csv_file)]
+
+    with patch("sys.argv", test_args):
+        cli = BriLoCLI()
+        with pytest.raises(SystemExit) as exc_info:
+            cli.run()
+        assert exc_info.value.code == EXIT_CODE_INVOERPROBLEEM
+
+def test_cli_configuratieprobleem_exit_code(tmp_path: pytest.TempPathFactory) -> None:
     """Testen of de CLI exitcode 1 retourneert wanneer een onjuist bestand wordt ingevoerd."""
     csv_file = tmp_path / "invalid.csv"
     csv_file.write_text("invalid content")
