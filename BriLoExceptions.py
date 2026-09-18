@@ -12,4 +12,14 @@ class MissingColumnError (Exception):
 
 
 class MissingRowError (Exception):
+    #Deze fout treedt op
+    #als het CSV-bestand de verwachte kolommen mist.
+    #
+    pass
+
+
+class CorruptedDataError(Exception):
+    #Deze fout treedt op
+    #als er gegevens ontbreken of beschadigd zijn.
+    #
     pass
