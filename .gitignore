@@ -17,5 +17,3 @@ __pycache__/
 *.md
 !orders.csv
 output/
-
-github.token.txt

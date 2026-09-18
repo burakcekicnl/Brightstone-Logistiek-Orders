@@ -14,7 +14,6 @@ EXIT_CODE_CONFIGURATIEFOUT = 2
 
 class BriLoCLI:
     """ Het is de hoofdklasse die het programma uitvoert.
-
     """
 
     #class maker
