@@ -4,7 +4,7 @@ import argparse
 from reader import BriLoReader
 from report import BriLoReport
 from writer import BriLoWriter
-from BriLoExceptions import InvalidCsvError, MissingColumnError
+from BriLoExceptions import InvalidCsvError, MissingColumnError, MissingRowError
 from typing import Dict, List
 
 #EXIT CODES
@@ -14,7 +14,6 @@ EXIT_CODE_CONFIGURATIEFOUT = 2
 
 class BriLoCLI:
     """ Het is de hoofdklasse die het programma uitvoert.
-
     """
 
     #class maker
@@ -82,6 +81,9 @@ class BriLoCLI:
             logging.error(f"Invoerfout: {e}")
             sys.exit(EXIT_CODE_INVOERPROBLEEM) # Exit Code: 1
         except MissingColumnError as e:
+            logging.error(f"Configuratiefout: {e}")
+            sys.exit(EXIT_CODE_CONFIGURATIEFOUT)  # Exit Code: 2
+        except MissingRowError as e:
             logging.error(f"Configuratiefout: {e}")
             sys.exit(EXIT_CODE_CONFIGURATIEFOUT)  # Exit Code: 2
         except Exception as e:

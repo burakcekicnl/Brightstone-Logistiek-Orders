@@ -15,7 +15,6 @@ class BriLoReport:
         """
         self.orders_data: List[Dict[str,str]] = orders
 
-   def 
 
 
 if __name__ == "__main__":

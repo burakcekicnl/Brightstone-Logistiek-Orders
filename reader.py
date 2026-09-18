@@ -1,7 +1,7 @@
 import csv
 import os
 from typing import Dict, List
-from BriLoExceptions import InvalidCsvError, MissingColumnError
+from BriLoExceptions import InvalidCsvError, MissingColumnError, MissingRowError
 
 
 
@@ -50,13 +50,14 @@ class BriLoReader:
         # 3. Controleer de column namen
         with open (self.file_path, mode="r") as file:
             # lees de column titles
-            reader = csv.DictReader(file)
+            reader = csv.DictReader(file, delimiter=";")
             headers: set[str] = set(reader.fieldnames or []) #verander fieldnames een Set
 
             # Controleer of er kolommen ontbreken.
             if not self.VERPLICHTE_COLUMNS.issubset(headers): # controleer alle kolumns is er in headers
                 ontbrekend = self.VERPLICHTE_COLUMNS - headers # vastleggen welke columns is ontbrekend
                 raise MissingColumnError(f"Ongeldige CSV-structuur! Ontbrekende kolommen: {ontbrekend}.")
+
         return True
 
     def read_data(self) -> List[Dict[str, str]]:
@@ -74,9 +75,11 @@ class BriLoReader:
 
         # Read de csv bestaand
         with open(self.file_path, mode="r") as file:
-            reader = csv.DictReader(file)
+            reader = csv.DictReader(file, delimiter=";")
             for row in reader:
                 orders.append(row)
+        if not orders:
+            raise MissingRowError(f"Het geselecteerde bestand '{self.file_path}' heeft geen orders")
         return orders
 
 
