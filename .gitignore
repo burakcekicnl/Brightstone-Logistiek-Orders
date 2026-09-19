@@ -1,0 +1,19 @@
+# Virtual Environment
+.venv/
+
+
+# Python Cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# PyCharm / IDE Settings
+.idea/
+
+
+# Output Reports 
+*.json
+*.csv
+*.md
+!orders.csv
+output/

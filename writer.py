@@ -1,0 +1,3 @@
+class BriLoWriter:
+    pass
+
