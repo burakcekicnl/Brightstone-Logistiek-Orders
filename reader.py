@@ -77,7 +77,11 @@ class BriLoReader:
         with open(self.file_path, mode="r") as file:
             reader = csv.DictReader(file, delimiter=";")
             for row in reader:
-                orders.append(row)
+                if not isinstance(row["aantal"], int) or not isinstance(row["prijs"], float):
+                    orders.append(row)
+                else:
+                    raise TypeError(f"'{row["prijs"]}' of '{row["aantal"]}' - Order prijs invalide!")
+
 
         if not orders :
             raise MissingRowError (f"Het geselecteerde bestand '{self.file_path}' heeft geen order.")

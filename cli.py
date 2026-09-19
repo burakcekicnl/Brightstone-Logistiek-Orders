@@ -56,11 +56,16 @@ class BriLoCLI:
         """Het initieert en controleert de applicatiestroom."""
         args = self.parser.parse_args()
         try:
-            # 1. Veriyi Oku
+            # 1. lees de gegevens
             reader = BriLoReader(args.input)
             data = reader.read_data()
-            print(data)
             logging.info(f"De bestellingen zijn succesvol opgehaald uit het '{args.input}' CSV-bestand.")
+
+            # 2. bereikenen
+            report = BriLoReport(data)
+            report_data = report.generate()
+            logging.info(f"Alle berekeningen zijn uitgevoerd en het ReportData-object is aangemaakt.")
+            print(report_data)
             sys.exit(EXIT_CODE_OK) # Exit Code: 0
 
             # 2. İş Mantığını Çalıştır
@@ -87,7 +92,7 @@ class BriLoCLI:
             logging.error(f"Configuratiefout: {e}")
             sys.exit(EXIT_CODE_CONFIGURATIEFOUT)  # Exit Code: 2
         except Exception as e:
-            logging.error(f"Onverwachte fout: Er zijn geen geldige bestanden gevonden.")
+            logging.error(f"{e} - Onverwachte fout: Er zijn geen geldige bestanden gevonden.")
             sys.exit(EXIT_CODE_INVOERPROBLEEM)
 
 

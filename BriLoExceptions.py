@@ -13,7 +13,7 @@ class MissingColumnError (Exception):
 
 class MissingRowError (Exception):
     #Deze fout treedt op
-    #als het CSV-bestand de verwachte kolommen mist.
+    #als het CSV-bestand de verwachte mist.
     #
     pass
 
