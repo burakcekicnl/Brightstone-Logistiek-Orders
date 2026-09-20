@@ -1,6 +1,7 @@
 import sys
 import logging
 import argparse
+from pathlib import Path
 from reader import BriLoReader
 from report import BriLoReport
 from writer import BriLoWriter
@@ -66,15 +67,14 @@ class BriLoCLI:
             report_data = report.generate()
             logging.info(f"Alle berekeningen zijn uitgevoerd en het ReportData-object is aangemaakt.")
             print(report_data)
-            sys.exit(EXIT_CODE_OK) # Exit Code: 0
 
-            # 2. İş Mantığını Çalıştır
-            #reporter = BriLoReport()#data)
-            #if args.customer:
-                #result = reporter.get_customer_report(args.customer)
-            #else:
-                #result = reporter.get_summary_report()
 
+
+            writer = BriLoWriter(report_data)
+            writer.write(output_path=Path(args.output), output_format=args.format)
+            logging.info(f"Rapport is aangemaakt.")
+
+            sys.exit(EXIT_CODE_OK)  # Exit Code: 0
             # 3. Sonucu Yazdır veya Kaydet
             #if args.output:
             #    writer = BriLoWriter()#args.output)
