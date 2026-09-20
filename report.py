@@ -112,7 +112,6 @@ class BriLoReport:
 
 
     def generate(self) -> ReportData:
-        pass
         """Het voert alle berekeningen uit en retourneert één enkel ReportData-object."""
         return ReportData(
         totaal_aantal_orders = self.totaal_aantal_orders,
