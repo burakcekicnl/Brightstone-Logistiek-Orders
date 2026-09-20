@@ -1,12 +1,15 @@
-import sys
-import logging
 import argparse
+import logging
+import sys
 from pathlib import Path
+
+from BriLoExceptions import InvalidCsvError, MissingColumnError, MissingRowError
 from reader import BriLoReader
 from report import BriLoReport
 from writer import BriLoWriter
-from BriLoExceptions import InvalidCsvError, MissingColumnError, MissingRowError
-from typing import Dict, List
+
+# Modulespecifiek logobject (genaamd 'cli' of de modulenaam)
+logger = logging.getLogger(__name__)
 
 #EXIT CODES
 EXIT_CODE_OK = 0
@@ -60,39 +63,31 @@ class BriLoCLI:
             # 1. lees de gegevens
             reader = BriLoReader(args.input)
             data = reader.read_data()
-            logging.info(f"De bestellingen zijn succesvol opgehaald uit het '{args.input}' CSV-bestand.")
+            logger.info(f"De bestellingen zijn succesvol opgehaald uit het '{args.input}' CSV-bestand.")
 
             # 2. bereikenen
             report = BriLoReport(data)
             report_data = report.generate()
-            logging.info(f"Alle berekeningen zijn uitgevoerd en het ReportData-object is aangemaakt.")
-            print(report_data)
+            logger.info("Alle berekeningen zijn uitgevoerd en het ReportData-object is aangemaakt.")
 
-
-
+            # 3. afdrukken
             writer = BriLoWriter(report_data)
             writer.write(output_path=Path(args.output), output_format=args.format)
-            logging.info(f"Rapport is aangemaakt.")
+            logger.info("Rapport is aangemaakt.")
 
             sys.exit(EXIT_CODE_OK)  # Exit Code: 0
-            # 3. Sonucu Yazdır veya Kaydet
-            #if args.output:
-            #    writer = BriLoWriter()#args.output)
-            #    writer.export(result)
-            #    print(f"Rapor başarıyla kaydedildi: {args.output}")
-            #else:
-            #    print(result)
+
         except InvalidCsvError as e:
-            logging.error(f"Invoerfout: {e}")
+            logger.error(f"Invoerfout: {e}")
             sys.exit(EXIT_CODE_INVOERPROBLEEM) # Exit Code: 1
         except MissingColumnError as e:
-            logging.error(f"Configuratiefout: {e}")
+            logger.error(f"Configuratiefout: {e}")
             sys.exit(EXIT_CODE_CONFIGURATIEFOUT)  # Exit Code: 2
         except MissingRowError as e:
-            logging.error(f"Configuratiefout: {e}")
+            logger.error(f"Configuratiefout: {e}")
             sys.exit(EXIT_CODE_CONFIGURATIEFOUT)  # Exit Code: 2
         except Exception as e:
-            logging.error(f"{e} - Onverwachte fout: Er zijn geen geldige bestanden gevonden.")
+            logger.error(f"{e} - Onverwachte fout: Er zijn geen geldige bestanden gevonden.")
             sys.exit(EXIT_CODE_INVOERPROBLEEM)
 
 

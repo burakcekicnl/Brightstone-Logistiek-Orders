@@ -1,7 +1,13 @@
-import pytest
 from unittest.mock import patch
-from cli import BriLoCLI, EXIT_CODE_OK, EXIT_CODE_INVOERPROBLEEM, EXIT_CODE_CONFIGURATIEFOUT
-from BriLoExceptions import InvalidCsvError
+
+import pytest
+
+from cli import (
+    EXIT_CODE_CONFIGURATIEFOUT,
+    EXIT_CODE_INVOERPROBLEEM,
+    EXIT_CODE_OK,
+    BriLoCLI,
+)
 
 HEADER = "order_id;datum;klant;product;aantal;prijs;categorie\n"
 

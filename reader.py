@@ -1,9 +1,8 @@
 import csv
 import os
-from typing import Dict, List
+from typing import ClassVar
+
 from BriLoExceptions import InvalidCsvError, MissingColumnError, MissingRowError
-
-
 
 
 class BriLoReader:
@@ -13,7 +12,7 @@ class BriLoReader:
             VERPLICHTE_COLUMNS (set[str]): Vereiste kolommen die in een CSV-bestand moeten worden opgenomen.
             file_path (str): Het pad naar het te verwerken CSV-bestand.
     """
-    VERPLICHTE_COLUMNS: set[str] = {'order_id',
+    VERPLICHTE_COLUMNS: ClassVar[set[str]] = {'order_id',
                           'datum',
                           'klant',
                           'product',
@@ -60,14 +59,14 @@ class BriLoReader:
 
         return True
 
-    def read_data(self) -> List[Dict[str, str]]:
+    def read_data(self) -> list[dict[str, str]]:
         """ Het leest de gegevens uit het CSV-bestand en geeft deze terug als een woordenboeklijst.
 
         Returns:
             List[Dict[str, str]]: Een gegevenslijst waarbij elke rij een woordenboek is.
         """
 
-        orders: List[Dict[str, str]] = []
+        orders: list[dict[str, str]] = []
         # import csv kan csv files lezen.
 
         # controleer het orderbestand

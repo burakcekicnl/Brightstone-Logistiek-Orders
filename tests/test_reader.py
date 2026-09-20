@@ -1,6 +1,7 @@
 import pytest
+
+from BriLoExceptions import InvalidCsvError, MissingColumnError
 from reader import BriLoReader
-from BriLoExceptions import InvalidCsvError, MissingColumnError, MissingRowError
 
 # Volledige verplichte header op basis van je BriLoReader
 HEADER = "order_id;datum;klant;product;aantal;prijs;categorie\n"

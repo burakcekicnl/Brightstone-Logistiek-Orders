@@ -1,7 +1,8 @@
 import logging
-from typing import List, Dict, Tuple
-from dataclasses import dataclass
 from collections import defaultdict
+from dataclasses import dataclass
+
+loggerReport = logging.getLogger(__name__)
 
 @dataclass(frozen=True)
 class ReportData:
@@ -9,9 +10,9 @@ class ReportData:
 
     totaal_aantal_orders: int
     totale_omzet: float
-    top_5_klanten: List[Tuple[str, float]]
-    omzet_per_categorie: Dict[str, float]
-    top_5_producten: List[Tuple[str, float]]
+    top_5_klanten: list[tuple[str, float]]
+    omzet_per_categorie: dict[str, float]
+    top_5_producten: list[tuple[str, float]]
 
 
 class BriLoReport:
@@ -21,16 +22,16 @@ class BriLoReport:
             VERPLICHTE_COLUMNS (set[str]): Vereiste kolommen die in een CSV-bestand moeten worden opgenomen.
             file_path (str): Het pad naar het te verwerken CSV-bestand.
     """
-    def __init__(self, orders: List[Dict[str, str]]) -> None:
+    def __init__(self, orders: list[dict[str, str]]) -> None:
         """ Start de BriLoReader-klasse.
         Args:
             orders: Het pad naar het te lezen CSV-bestand.
         """
-        self.orders_data: List[Dict[str,str]] = orders
+        self.orders_data: list[dict[str,str]] = orders
 
     @property
     def totaal_aantal_orders(self) -> int:
-        logging.info(f"Het totale aantal orders is berekend.")
+        loggerReport.info("Het totale aantal orders is berekend.")
 
         return len(self.orders_data)
 
@@ -43,14 +44,14 @@ class BriLoReport:
         for order in self.orders_data: #bereken totale omzet
             orderkosten = int(order["aantal"]) * float(order["prijs"])
             totale_omzet += orderkosten
-        logging.info(f"Het totale omzet uit orders werd berekend.")
+        loggerReport.info("Het totale omzet uit orders werd berekend.")
         return totale_omzet
 
 
     @property
-    def top_5_producten_op_omzet(self) -> List[Tuple[str, float]]:
+    def top_5_producten_op_omzet(self) -> list[tuple[str, float]]:
         # 1 klant dictionary met omzet
-        product_omzet: Dict[str, float] = defaultdict(float)
+        product_omzet: dict[str, float] = defaultdict(float)
 
         # 2 for lus om gegevenst te groepen
         for order in self.orders_data:
@@ -61,19 +62,19 @@ class BriLoReport:
 
             product_omzet[product] += aantal * prijs
 
-        sorted_producten: List[Tuple[str, float]] = sorted(
+        sorted_producten: list[tuple[str, float]] = sorted(
             product_omzet.items(),
             key=lambda item: item[1],
             reverse=True
         )[:5]
 
-        logging.info(f"Top 5 producten op omzet werd berekend.")
+        loggerReport.info("Top 5 producten op omzet werd berekend.")
         return [(product, round(omzet, 2)) for product, omzet in sorted_producten]
 
     @property
-    def top_5_klanten_op_besteed_bedrag(self):
+    def top_5_klanten_op_besteed_bedrag(self) -> list[tuple[str, float]]:
         # 1 klant dictionary met omzet
-        klant_omzet: Dict[str, float] = defaultdict(float)
+        klant_omzet: dict[str, float] = defaultdict(float)
 
         # 2 for lus om gegevenst te groepen
         for order in self.orders_data:
@@ -84,19 +85,19 @@ class BriLoReport:
 
             klant_omzet[klant] += aantal * prijs
 
-        sorted_klanten: List[Tuple[str, float]] = sorted(
+        sorted_klanten: list[tuple[str, float]] = sorted(
             klant_omzet.items(),
             key=lambda item: item[1],
             reverse=True
         )[:5]
 
-        logging.info(f"Top 5 klanten op besteed bedrag werd berekend.")
+        loggerReport.info("Top 5 klanten op besteed bedrag werd berekend.")
         return [(klant, round(omzet, 2)) for klant, omzet in sorted_klanten]
 
     @property
-    def omzet_per_categorie(self):
+    def omzet_per_categorie(self) -> dict[str, float]:
         # 1 klant dictionary met omzet
-        categorie_omzet: Dict[str, float] = defaultdict(float)
+        categorie_omzet: dict[str, float] = defaultdict(float)
 
         # 2 for lus om gegevenst te groepen
         for order in self.orders_data:
@@ -107,7 +108,7 @@ class BriLoReport:
 
             categorie_omzet[categorie] += aantal * prijs
 
-        logging.info(f"De Omzet werd per categorie  berekend.")
+        loggerReport.info("De Omzet werd per categorie  berekend.")
         return {categorie: round(omzet, 2) for categorie, omzet in categorie_omzet.items()}
 
 
@@ -124,7 +125,7 @@ class BriLoReport:
 
 
 if __name__ == "__main__":
-    data: List[Dict[str, str]] = []
+    data: list[dict[str, str]] = []
     test_reader = BriLoReport(data)
     print("Testing...")
 
