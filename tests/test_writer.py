@@ -1,5 +1,7 @@
-import pytest
 import json
+
+import pytest
+
 from writer import BriLoWriter
 
 
@@ -8,7 +10,7 @@ def test_json_output_format(tmp_path: pytest.TempPathFactory) -> None:
     output_file = tmp_path / "output.json"
     data = {"total_revenue": 1000.0}
     writer = BriLoWriter(str(output_file))
-    writer.write_json(data)
+    writer.write(output_path="output\\rapport.json", output_format="json")
 
     assert output_file.exists()
     content = json.loads(output_file.read_text())

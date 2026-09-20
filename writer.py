@@ -1,11 +1,10 @@
-import json
 import datetime
+import json
 from dataclasses import asdict
 from pathlib import Path
-from typing import Any, Dict
+from typing import Any
 
 from report import ReportData
-
 
 
 class BriLoWriter:
@@ -29,7 +28,7 @@ class BriLoWriter:
         Returns:
             str: Een JSON-representatie van de rapportgegevens.
         """
-        data_dict: Dict[str, Any] = asdict(self.report_data)
+        data_dict: dict[str, Any] = asdict(self.report_data)
         return json.dumps(data_dict, indent=4, ensure_ascii=False)
 
     def _to_markdown(self) -> str:
@@ -41,7 +40,7 @@ class BriLoWriter:
         md_totale_omzet = f"{self.report_data.totale_omzet:,.2f}"
         md_totale_omzet = md_totale_omzet.replace(",", "X").replace(".", ",").replace("X", ".")
 
-        md_date = datetime.datetime.now()
+        md_date = datetime.datetime.now(tz=datetime.timezone.utc)
         md_date_str = f"{md_date.strftime('%d.%m.%Y')}"
         lines: list[str] = [
             f"# <span style='color: #0d6efd;'>Brigtstone Logistiek Rapportage - {md_date_str}</span>",

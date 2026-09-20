@@ -1,4 +1,5 @@
 import pytest
+
 from report import BriLoReport
 
 
@@ -6,38 +7,38 @@ from report import BriLoReport
 def sample_data() -> list[dict[str, str]]:
     """Testler için örnek veri fikstürü."""
     return [
-        {"order_id": "1", "category": "Electronics", "amount": "100.0", "customer": "A"},
-        {"order_id": "2", "category": "Electronics", "amount": "200.0", "customer": "B"},
-        {"order_id": "3", "category": "Books", "amount": "50.0", "customer": "A"},
-        {"order_id": "4", "category": "Books", "amount": "150.0", "customer": "C"},
-        {"order_id": "5", "category": "Clothing", "amount": "300.0", "customer": "D"},
-        {"order_id": "6", "category": "Clothing", "amount": "400.0", "customer": "E"},
+        {"order_id": "1", "datum":"4-1-2026", "klant": "A", "product": "product 1", "categorie": "category 1", "aantal": "2",  "prijs": "100.0"},
+        {"order_id": "2", "datum":"5-1-2026", "klant": "A", "product": "product 2", "categorie": "category 2", "aantal": "2",  "prijs": "100.0"},
+        {"order_id": "3", "datum":"6-1-2026", "klant": "B", "product": "product 3", "categorie": "category 3", "aantal": "3",  "prijs": "200.0"},
+        {"order_id": "4", "datum":"7-1-2026", "klant": "B", "product": "product 4", "categorie": "category 4", "aantal": "4",  "prijs": "300.0"},
+        {"order_id": "5", "datum":"8-1-2026", "klant": "C", "product": "product 1", "categorie": "category 1", "aantal": "5",  "prijs": "400.0"},
+        {"order_id": "6", "datum":"9-1-2026", "klant": "A", "product": "product 5", "categorie": "category 5", "aantal": "1",  "prijs": "500.0"},
     ]
 
 
-def test_top_5_calculation(sample_data: list[dict[str, str]]) -> None:
-    """Top-5-berekening testi."""
+def test_top_5_producten(sample_data: list[dict[str, str]]) -> None:
+    """Top-5-berekening test."""
     reporter = BriLoReport(sample_data)
-    top_5 = reporter.get_top_5_orders()
+    top_5 = reporter.top_5_producten_op_omzet
     assert len(top_5) == 5
-    assert float(top_5[0]["amount"]) == 400.0
+    assert float(top_5[0][1]) == 2200.0
 
 
-def test_revenue_per_category(sample_data: list[dict[str, str]]) -> None:
-    """Omzet-per-categorie testi."""
+def test_omzet_per_category(sample_data: list[dict[str, str]]) -> None:
+    """Omzet-per-categorie test."""
     reporter = BriLoReport(sample_data)
-    revenue = reporter.get_revenue_per_category()
-    assert revenue["Electronics"] == 300.0
-    assert revenue["Books"] == 200.0
+    omzet = reporter.omzet_per_categorie
+    assert omzet["category 2"] == 200.0
+    assert omzet["category 5"] == 500.0
 
 
-def test_total_revenue(sample_data: list[dict[str, str]]) -> None:
-    """Toplam ciro hesabı testi."""
+def test_total_omzet(sample_data: list[dict[str, str]]) -> None:
+    """est voor de berekening van de totale omzet."""
     reporter = BriLoReport(sample_data)
-    assert reporter.get_total_revenue() == 1200.0
+    assert reporter.totale_omzet == 4700.0
 
 
 def test_empty_report_data() -> None:
     """Boş veri seti ile rapor üretme testi."""
     reporter = BriLoReport([])
-    assert reporter.get_total_revenue() == 0.0
+    assert reporter.totale_omzet == 0.0
