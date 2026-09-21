@@ -5,7 +5,7 @@ from report import BriLoReport
 
 @pytest.fixture
 def sample_data() -> list[dict[str, str]]:
-    """Testler için örnek veri fikstürü."""
+    """voorbeeld data vor testen"""
     return [
         {"order_id": "1", "datum":"4-1-2026", "klant": "A", "product": "product 1", "categorie": "category 1", "aantal": "2",  "prijs": "100.0"},
         {"order_id": "2", "datum":"5-1-2026", "klant": "A", "product": "product 2", "categorie": "category 2", "aantal": "2",  "prijs": "100.0"},
@@ -33,12 +33,12 @@ def test_omzet_per_category(sample_data: list[dict[str, str]]) -> None:
 
 
 def test_total_omzet(sample_data: list[dict[str, str]]) -> None:
-    """est voor de berekening van de totale omzet."""
+    """test voor de berekening van de totale omzet."""
     reporter = BriLoReport(sample_data)
     assert reporter.totale_omzet == 4700.0
 
 
 def test_empty_report_data() -> None:
-    """Boş veri seti ile rapor üretme testi."""
+    """test voor de berekening van de totale omzet met lege data """
     reporter = BriLoReport([])
     assert reporter.totale_omzet == 0.0
